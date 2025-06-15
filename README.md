@@ -128,4 +128,3 @@ For questions or contributions, please open an issue or contact:
 - **Iraklis Spyrou** (iraklis.spyrou@gmail.com)
 -**Alexandros Ntagiantas** (alexisnt13@gmail.com)
 
-```
