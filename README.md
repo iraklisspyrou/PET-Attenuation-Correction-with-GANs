@@ -112,7 +112,7 @@ python wgan_gp/training.py \
    ```
   find_parameters.py, 
   YOLOv8_detection.ipynb
-```
+  ```
 
 ## Results
 - **Quantitative Metrics**: WGAN-GP outperforms Pix2Pix by +1.6 dB PSNR and has smoother training with much less spikes in the loss curves
