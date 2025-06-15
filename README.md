@@ -1,7 +1,5 @@
 # PET-Attenuation-Correction-with-GANs
 
-# PET Attenuation Correction with GANs
-
 This repository contains code and data for PET image attenuation correction using Generative Adversarial Networks (GANs). We compare a vanilla Pix2Pix model against a WGAN-GP variant to generate attenuation-corrected (AC) images from non-corrected (NAC) PET scans without the need for CT. Source detection on NAC and GEN (WGAN-GP) images with YOLOv8n is examined.
 
 ## Table of Contents
