@@ -107,7 +107,7 @@ python wgan_gp/training.py \
 ```
 
 
-3. Downstream detection with YOLOv8:
+### Downstream detection with YOLOv8:
 
    ```
   find_parameters.py, \
