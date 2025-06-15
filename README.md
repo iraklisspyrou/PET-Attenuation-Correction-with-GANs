@@ -75,7 +75,6 @@ PET-Attenuation-Correction-with-GANs/
 
 1. Clone this repository:
 
-   ```bash
    ```
 
 git clone [https://github.com/iraklisspyrou/PET-Attenuation-Correction-with-GANs.git](https://github.com/iraklisspyrou/PET-Attenuation-Correction-with-GANs.git)
