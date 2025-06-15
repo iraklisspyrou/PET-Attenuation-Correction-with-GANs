@@ -56,6 +56,9 @@ PET-Attenuation-Correction-with-GANs/
 ├── recon/             #Contains reconstruction code files for single and double sources
 │   └── iter_recon_single.py
 │   └── iter_recon_double.py
+└── split_data.py              # Code for splitting data to train/val/test 
+└── Report.pdf              # Report of the project
+└── Presentation.ppt              # Presentation of the project
 └── README.md              # This file
 ```
 
