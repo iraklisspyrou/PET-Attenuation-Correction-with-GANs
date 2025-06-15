@@ -1,0 +1,307 @@
+ #  *********************************************************************
+#  * DISCLAIMER                                                        *
+#  *                                                                   *
+#  * Neither the authors of this software system, nor their employing  *
+#  * institutes, nor the agencies providing financial support for this *
+#  * work make any representation or warranty, express or implied,     *
+#  * regarding this software system or assume any liability for its    *
+#  * use.                                                              *
+#  *                                                                   *
+#  * This code implementation is the intellectual property of the      *
+#  * OpenGATE collaboration.                                           *
+#  * By copying, distributing or modifying the Program (or any work    *
+#  * based on the Program) you indicate your acceptance of this        *
+#  * statement, and all its terms.                                     *
+#  *********************************************************************
+#
+                                                          
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+#
+#         D E F I N E   Y O U R   S C A N N E R   A N D       
+#                                                             
+#        Y O U R   C O M P L E T E   S I M U L A T I O N   
+#                                                             
+#        F O R   I M A G I N G    A P P L I CA T I O N S       
+#                                                     
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+
+
+#=====================================================
+# GEOMETRY
+#=====================================================
+
+
+/gate/geometry/setMaterialDatabase    ../../misc/GateMaterials.db
+
+
+#
+#     W O R L D
+#
+/gate/world/geometry/setXLength       400. cm
+/gate/world/geometry/setYLength       400. cm
+/gate/world/geometry/setZLength       400. cm
+
+
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+#                                                                 #
+#     D E F I N I T I O N   A N D   D E S C R I T I O N           #
+#        O F   Y O U R   P E T   D E V I C E                      #
+#                                                                 #
+#-------------------oooooOOOOO00000OOOOOooooo---------------------#
+
+#	CYLINDRICAL
+/gate/world/daughters/name                    cylindricalPET
+/gate/world/daughters/insert                  cylinder
+/gate/cylindricalPET/placement/setTranslation 0.0 0.0 0.0 cm
+/gate/cylindricalPET/geometry/setRmax         100.0 cm
+/gate/cylindricalPET/geometry/setRmin         80.0 cm
+/gate/cylindricalPET/geometry/setHeight       50.0 cm
+/gate/cylindricalPET/setMaterial              Air
+/gate/cylindricalPET/vis/forceWireframe
+/gate/cylindricalPET/vis/setColor             white
+
+#	head
+/gate/cylindricalPET/daughters/name           head
+/gate/cylindricalPET/daughters/insert         box
+/gate/head/placement/setTranslation           90.0 0.0 0.0 cm
+/gate/head/geometry/setXLength                19.0  cm
+/gate/head/geometry/setYLength                17.0 cm
+/gate/head/geometry/setZLength                49.0 cm
+/gate/head/setMaterial                        Air
+/gate/head/vis/forceWireframe
+/gate/head/vis/setColor                       white
+
+
+#	BLOCK
+/gate/head/daughters/name                     block
+/gate/head/daughters/insert                   box
+/gate/block/geometry/setXLength               19.0 cm
+/gate/block/geometry/setYLength               17 cm
+/gate/block/geometry/setZLength               12.0 cm
+/gate/block/setMaterial                       Air
+/gate/block/vis/setColor                      red
+/gate/block/vis/forceWireframe
+
+#	C R Y S T A L
+/gate/block/daughters/name                    crystal
+/gate/block/daughters/insert                  box
+/gate/crystal/geometry/setXLength             19.0 cm
+/gate/crystal/geometry/setYLength             2.5 cm
+/gate/crystal/geometry/setZLength             2.0 cm
+/gate/crystal/setMaterial                     Air
+/gate/crystal/vis/setColor                    blue
+/gate/crystal/vis/forceWireframe
+
+#	LSO layer
+/gate/crystal/daughters/name                  LSO
+/gate/crystal/daughters/insert                box
+/gate/LSO/placement/setTranslation            0.0 0.0 0.0 cm
+/gate/LSO/geometry/setXLength                 19.0 cm
+/gate/LSO/geometry/setYLength                 2.5 cm
+/gate/LSO/geometry/setZLength                 2.8 cm
+/gate/LSO/setMaterial                         LSO
+/gate/LSO/vis/setColor                        green
+
+
+#	R E P E A T    C R Y S T A L
+/gate/crystal/repeaters/insert                cubicArray
+/gate/crystal/cubicArray/setRepeatNumberX     1
+/gate/crystal/cubicArray/setRepeatNumberY     6
+/gate/crystal/cubicArray/setRepeatNumberZ     6
+/gate/crystal/cubicArray/setRepeatVector      0.0 2.5 2.0 cm
+
+
+#	R E P E A T    BLOCK
+/gate/block/repeaters/insert                  cubicArray
+/gate/block/cubicArray/setRepeatNumberZ       4
+/gate/block/cubicArray/setRepeatVector        0.0 0.0 12.1 cm
+
+
+#	R E P E A T HEAD
+/gate/head/repeaters/insert                   ring
+/gate/head/ring/setRepeatNumber               32
+
+
+#	A T T A C H    S Y S T E M 
+/gate/systems/cylindricalPET/rsector/attach   head
+/gate/systems/cylindricalPET/module/attach    block
+/gate/systems/cylindricalPET/crystal/attach   crystal
+/gate/systems/cylindricalPET/layer0/attach    LSO
+
+#	A T T A C H    C R Y S T A L  SD
+
+/gate/LSO/attachCrystalSD
+
+/gate/systems/cylindricalPET/describe
+
+/gate/cylindricalPET/moves/insert             orbiting
+/gate/cylindricalPET/orbiting/setSpeed        30 deg/s
+/gate/cylindricalPET/orbiting/setPoint1       0 0 0 cm
+/gate/cylindricalPET/orbiting/setPoint2       0 0 1 cm
+
+#=====================================================
+#  P H A N T O M
+#=====================================================
+
+/gate/world/daughters/name       phantom
+/gate/world/daughters/insert     sphere
+/gate/phantom/geometry/setRmax   __R__ cm
+/gate/phantom/placement/setTranslation  __X__ __Y__ __Z__ __cm__
+/gate/phantom/setMaterial        Water
+/gate/phantom/attachPhantomSD
+
+#=====================================================
+# PHYSICS
+#=====================================================
+
+/gate/physics/addProcess PhotoElectric
+/gate/physics/processes/PhotoElectric/setModel StandardModel
+
+/gate/physics/addProcess Compton
+/gate/physics/processes/Compton/setModel StandardModel
+
+/gate/physics/addProcess RayleighScattering
+/gate/physics/processes/RayleighScattering/setModel PenelopeModel
+
+/gate/physics/addProcess ElectronIonisation
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e-
+/gate/physics/processes/ElectronIonisation/setModel StandardModel e+
+
+/gate/physics/addProcess Bremsstrahlung
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e-
+/gate/physics/processes/Bremsstrahlung/setModel StandardModel e+
+
+/gate/physics/addProcess PositronAnnihilation
+
+/gate/physics/addProcess MultipleScattering e+
+/gate/physics/addProcess MultipleScattering e-
+/gate/physics/processList Initialized
+
+#=====================================================
+# CUTS
+#=====================================================
+
+/gate/physics/Gamma/SetCutInRegion      LSO 1.0 cm
+/gate/physics/Electron/SetCutInRegion   LSO 1.0 cm
+/gate/physics/Positron/SetCutInRegion   LSO 1.0 cm
+
+
+
+#/gate/physics/Gamma/SetCutInRegion      phantom 0.1 mm
+#/gate/physics/Electron/SetCutInRegion   phantom 0.1 mm
+#/gate/physics/Positron/SetCutInRegion   phantom 0.1 mm
+
+#/gate/physics/SetMaxStepSizeInRegion    phantom 0.01 mm
+
+#=====================================================
+# INITIALISATION
+#=====================================================
+
+/gate/run/initialize
+
+#=====================================================
+# VISUALISATION
+#=====================================================
+
+##/vis/disable
+
+#/vis/open                           OGLSX
+#/vis/viewer/set/viewpointThetaPhi   30 30
+#/vis/viewer/zoom                    1.5
+#/vis/drawVolume
+#/tracking/storeTrajectory           1
+#/vis/scene/add/trajectories
+#/vis/scene/endOfEventAction         accumulate
+
+#/control/execute                    Verbose.mac
+
+#=====================================================
+# Show how the geometry moves with time
+#=====================================================
+
+#/control/execute                        MoveVisu.mac
+
+#=====================================================
+#   D I G I T I Z E R: DETECTOR ELECTRONIC RESPONSE
+#===================================================== 
+
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/insert                        adder
+
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/insert                        readout
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/readout/setDepth              1
+
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/insert                        energyResolution
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/energyResolution/fwhm        0.26
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/energyResolution/energyOfReference 511. keV
+
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/insert                        energyFraming
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/energyFraming/setMin      350. keV
+/gate/digitizerMgr/LSO/SinglesDigitizer/Singles/energyFraming/setMax            650. keV
+
+#=====================================================
+#	C O I N C I D E N C E    S O R T E R
+#===================================================== 
+/gate/digitizerMgr/CoincidenceSorter/Coincidences/setInputCollection Singles_LSO
+/gate/digitizerMgr/CoincidenceSorter/Coincidences/setWindow          10. ns
+
+/gate/digitizerMgr/name                            delay
+/gate/digitizerMgr/insert                          CoincidenceSorter
+/gate/digitizerMgr/CoincidenceSorter/delay/setInputCollection Singles_LSO
+/gate/digitizerMgr/CoincidenceSorter/delay/setWindow                 10. ns
+/gate/digitizerMgr/CoincidenceSorter/delay/setOffset                 500. ns
+
+
+#=====================================================
+#  P A R T I C L E   S O U R C E
+#=====================================================
+
+# --- particle source (hotspot) ---
+/gate/source/addSource                   twogamma1
+/gate/source/twogamma1/setActivity       2000 Bq
+/gate/source/twogamma1/setType           backtoback
+/gate/source/twogamma1/gps/particle      gamma
+/gate/source/twogamma1/gps/energytype    Mono
+/gate/source/twogamma1/gps/monoenergy    511 keV
+/gate/source/twogamma1/gps/type                   Volume
+/gate/source/twogamma1/gps/shape         Cylinder
+/gate/source/twogamma1/gps/radius        __SR__ cm
+/gate/source/twogamma1/gps/angtype       iso
+/gate/source/twogamma1/gps/centre        __X__ __Y__ __Z__ __cm__
+/gate/source/twogamma1/gps/halfz                  1.0 cm
+/gate/source/twogamma1/gps/mintheta               0. deg
+/gate/source/twogamma1/gps/maxtheta               180. deg
+/gate/source/twogamma1/gps/minphi                 0. deg
+/gate/source/twogamma1/gps/maxphi                 360. deg
+
+#=====================================================
+#  D A T A   O U T P U T   
+#=====================================================
+
+/gate/output/root/enable
+/gate/output/root/setFileName             __OUTPUT_NAME__
+/gate/output/root/setRootHitFlag          0
+/gate/output/root/setRootSinglesFlag      1
+/gate/output/root/setRootCoincidencesFlag 1
+/gate/output/root/setRootdelayFlag        1
+
+#====================================================
+#  R A N D O M   E N G I N E  A N D  S E E D
+#====================================================
+# JamesRandom Ranlux64 MersenneTwister
+/gate/random/setEngineName JamesRandom
+#/gate/random/setEngineSeed default
+#/gate/random/setEngineSeed auto
+#/gate/random/setEngineSeed 123456789
+/gate/random/setEngineSeed default
+#/gate/random/resetEngineFrom fileName
+/gate/random/verbose 1
+
+#=====================================================
+#   M E A S U R E M E N T   S E T T I N G S   
+#=====================================================
+
+/gate/application/setTimeSlice   10 s
+/gate/application/setTimeStart   0 s
+/gate/application/setTimeStop    100 s
+
+/gate/application/startDAQ   
