@@ -74,13 +74,12 @@ PET-Attenuation-Correction-with-GANs/
 ## Installation
 
 1. Clone this repository:
-
-   ```
-
+```
 git clone [https://github.com/iraklisspyrou/PET-Attenuation-Correction-with-GANs.git](https://github.com/iraklisspyrou/PET-Attenuation-Correction-with-GANs.git)
 cd PET-Attenuation-Correction-with-GANs
+```
 
-````
+
 2. Install Python packages:
 
 
