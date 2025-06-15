@@ -59,7 +59,7 @@ PET-Attenuation-Correction-with-GANs/
 └── README.md              # This file
 ```
 
-## Requirements
+### Requirements
 
 * Python 3.8+
 * PyTorch 1.12+
