@@ -80,10 +80,10 @@ cd PET-Attenuation-Correction-with-GANs
 ```
 
 
-2. Install Python packages:
+2. Install Python packages from the above mentioned requirements.
 
 
-3. (Optional) Install vGATE for data simulations.
+3. Install vGATE (Virtual Box version of GATE) for data simulations.
 
 ## Data Preparation
 
@@ -95,13 +95,13 @@ cd PET-Attenuation-Correction-with-GANs
 
 ### Pix2Pix
 
-```bash
+```
 python vanilla_pix2pix/training.py \
 ```
 
 ### WGAN-GP
 
-```bash
+```
 python wgan_gp/training.py \
 
 ```
@@ -109,12 +109,9 @@ python wgan_gp/training.py \
 
 3. Downstream detection with YOLOv8:
 
-   ```bash
    ```
-
-  find_parameters.py
+  find_parameters.py, 
   YOLOv8_detection.ipynb
-
 ```
 
 ## Results
